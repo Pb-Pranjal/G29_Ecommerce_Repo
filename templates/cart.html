@@ -1,0 +1,87 @@
+{% extends 'index.html' %}
+{% block content %}
+<div class="container">
+    <h1>Your Shopping Cart</h1>
+
+    <!-- Display Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="flash-message {{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <!-- Check if the cart is empty -->
+    {% if cart_items %}
+        <div class="cart-items">
+            {% for item in cart_items %}
+                <div class="cart-item">
+                    <img src="{{ item.image_url }}" alt="{{ item.name }}" class="product-image">
+                    <div class="cart-details">
+                        <h2>{{ item.name }}</h2>
+                        <p><strong>Price per unit:</strong> ₹{{ item.price }}</p>
+                        
+                        <p><strong>Quantity:</strong> 
+                            <button class="qty-btn decrease" data-product-id="{{ item.product_id }}">-</button> 
+                            <span class="qty" id="quantity-{{ item.product_id }}">{{ item.quantity }}</span> 
+                            <button class="qty-btn increase" data-product-id="{{ item.product_id }}">+</button>
+                        </p>
+
+                        <p><strong>Total Price:</strong> ₹<span id="total-price-{{ item.product_id }}">{{ item.price * item.quantity }}</span></p>
+
+                        <form action="{{ url_for('remove_from_cart', product_id=item.product_id) }}" method="POST">
+                            <button type="submit" class="btn btn-secondary">Remove</button>
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <!-- Cart Actions -->
+        <div class="cart-actions">
+            <a href="{{ url_for('home') }}" class="btn btn-primary">← Continue Shopping</a>
+            <a href="{{ url_for('checkout') }}" class="btn btn-primary">Proceed to Checkout</a>
+        </div>
+
+    {% else %}
+        <p class="empty-cart-message">Your cart is empty. <a href="{{ url_for('home') }}">Go shopping</a>!</p>
+    {% endif %}
+</div>
+
+<script>
+    document.querySelectorAll('.qty-btn').forEach(button => {
+        button.addEventListener('click', function () {
+            let productId = this.getAttribute('data-product-id');
+            let quantityElement = document.getElementById("quantity-" + productId);
+            let totalPriceElement = document.getElementById("total-price-" + productId);
+            let pricePerUnit = parseFloat(totalPriceElement.innerText) / parseInt(quantityElement.innerText);
+
+            let currentQuantity = parseInt(quantityElement.innerText);
+
+            if (this.classList.contains('increase')) {
+                currentQuantity++;
+            } else if (this.classList.contains('decrease') && currentQuantity > 1) {
+                currentQuantity--;
+            }
+
+            quantityElement.innerText = currentQuantity;
+            totalPriceElement.innerText = (currentQuantity * pricePerUnit).toFixed(2);
+
+            // Send AJAX request to update quantity in the backend (similar to the previous method)
+            fetch('/update_quantity', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ product_id: productId, quantity: currentQuantity })
+            }).then(response => response.json())
+              .then(data => {
+                  if (!data.success) {
+                      alert("Failed to update cart!");
+                  }
+              });
+        });
+    });
+</script>
+{% endblock %}

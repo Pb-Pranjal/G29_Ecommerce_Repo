@@ -1,0 +1,168 @@
+{% extends 'index.html' %}
+{% block style %}
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #F4F1E1; /* Light beige background */
+        margin: 0;
+        padding: 0;
+    }
+    header {
+        background-color: #9C6644; /* Warm Brown */
+        color: white;
+        text-align: center;
+        padding: 20px;
+    }
+    header h1 {
+        margin: 0;
+    }
+    .container {
+        padding: 20px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    .profile-section {
+        background-color: #E7BC91; /* Soft Beige */
+        padding: 20px;
+        margin-bottom: 20px;
+        border-radius: 8px;
+    }
+    .profile-section h2 {
+        margin-top: 0;
+    }
+    .profile-details {
+        margin-bottom: 20px;
+        font-size: 1.1rem;
+    }
+    .purchase-history {
+        background-color: #DDB892; /* Light Tan */
+        padding: 20px;
+        border-radius: 8px;
+    }
+    .purchase-history table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    .purchase-history th, .purchase-history td {
+        padding: 10px;
+        border-bottom: 1px solid #ccc;
+        text-align: left;
+    }
+    .purchase-history th {
+        background-color: #9C6644;
+        color: white;
+    }
+    .purchase-history tr:hover {
+        background-color: #f0f0f0;
+    }
+    .recommendation-section {
+        margin-top: 40px;
+        text-align: center;
+    }
+    .recommendation-section h3 {
+        margin-bottom: 20px;
+    }
+    .product-card {
+        display: inline-block;
+        margin: 10px;
+        width: 220px;
+        padding: 15px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        background-color: #fff;
+        text-align: center;
+    }
+    .product-card img {
+        width: 100%;
+        border-radius: 8px;
+    }
+    .continue-shopping-btn {
+        padding: 10px 20px;
+        background-color: #9C6644;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1rem;
+    }
+    .continue-shopping-btn:hover {
+        background-color: #7a4b32;
+    }
+</style>
+{% endblock %}
+    
+{% block content %}
+<header>
+    <h1>Welcome to Your Profile</h1>
+</header>
+
+<div class="container">
+    <!-- Profile Section -->
+    <div class="profile-section">
+        <h2>Buyer Information</h2>
+        <div class="profile-details">
+            <p><strong>Name:</strong> {{ current_user.name }}</p>
+            <p><strong>Email:</strong> {{ current_user.email }}</p>
+        </div>
+    </div>
+
+    <!-- Purchase History Section -->
+    <div class="purchase-history">
+        <h2>Your Purchase History</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in purchase_details %}
+                    <tr>
+                        <td>{{ item.name }}</td>
+                        <td>₹{{ item.price }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td>₹{{ item.total }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <h3>Total Spent: ₹{{ total_spent }}</h3>
+    </div>
+
+    <!-- Recommended Products Section -->
+    <div class="recommendation-section">
+        <h3>Recommended Products</h3>
+        <div class="product-card">
+            <img src="https://i.pinimg.com/474x/04/41/ac/0441acaa12ba52ce2e2a270c841285a8.jpg" alt="Product 1">
+            <h4>Product 1</h4>
+            <p>₹100000</p>
+        </div>
+        <div class="product-card">
+            <img src="https://i.pinimg.com/474x/14/bf/3c/14bf3c75677167c88f65f9c240910b2a.jpg" alt="Product 2">
+            <h4>Product 2</h4>
+            <p>₹200000</p>
+        </div>
+        <div class="product-card">
+            <img src="https://i.pinimg.com/474x/a7/e3/59/a7e359ebc423bf964a2d2517f16f07fb.jpg" alt="Product 3">
+            <h4>Product 3</h4>
+            <p>₹150000</p>
+        </div>
+        <div class="product-card">
+            <img src="https://i.pinimg.com/474x/10/c5/0e/10c50e061debe1587684cb9e1ffa87ef.jpg" alt="Product 3">
+            <h4>Product 4</h4>
+            <p>₹250000</p>
+        </div>
+        
+
+        <br>
+        <button class="continue-shopping-btn" onclick="window.location.href='/product'">Continue Shopping</button>
+    </div>
+</div>
+{% endblock %}
+
+   
+
+

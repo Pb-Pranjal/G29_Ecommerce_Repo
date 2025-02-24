@@ -1,0 +1,142 @@
+{% extends 'index.html' %}
+{% block style %}
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f6dccd;
+    }
+
+    ul.space-y-2 > li {
+        text-align: left;
+        font-size: 20px;
+    }
+
+    h1 {
+        text-align: left;
+    }
+
+    div.image > img {
+        height: 250px;
+        width: 400px;
+    }
+
+    div.image > button {
+        background-color: #f77e32;
+        border-radius: 15px;
+        color: white;
+    }
+
+    .mb-4 > img {
+        width: 100%;
+        height: 400px;
+        object-fit: cover;
+    }
+
+    .sidebar {
+        position: sticky; /* Makes the sidebar sticky */
+        top: 0; /* Sticks to the top of the page */
+        flex: 0 0 350px;
+        background-color: #ffffff;
+        padding: 20px;
+        display: fixed;
+        border-radius: 8px;
+        box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+        height: calc(100vh - 40px); /* Full height of viewport */
+        overflow-y: auto; /* Enable scroll for sidebar if content exceeds height */
+   
+    }
+
+    .content {
+        flex: 1;
+        padding: 20px;
+        overflow-y: auto;
+    }
+
+    .container {
+        display: flex;
+        gap: 24px;
+        align-items: flex-start;
+      max-width: 2400px;
+        margin: 0 auto;
+        
+        /* margin: 0 auto; */
+    }
+
+    .grid {
+        display: grid;
+        gap: 16px;
+    }
+    
+
+    @media (min-width: 1024px) {
+        .grid {
+            grid-template-columns: repeat(4, 1fr);
+        }
+    }
+   
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h1 class="text-2xl font-bold mb-4">Living Room Furniture</h1>
+        <ul class="space-y-2 mb-8">
+            <li class="text-lg">Coffee Tables</li>
+            <li class="text-lg">Sofa and Couches</li>
+            <li class="text-lg">Bookshelves</li>
+            <li class="text-lg">Side Tables</li>
+        </ul>
+        <hr class="mb-6">
+        <h1 class="text-2xl font-bold mb-4">Dining Room Furniture</h1>
+        <ul class="space-y-2 mb-8">
+            <li class="text-lg">Dining Tables</li>
+            <li class="text-lg">Dining Chairs</li>
+            <li class="text-lg">Buffets and Sideboards</li>
+            <li class="text-lg">Bar Carts</li>
+        </ul>
+        <hr class="mb-6">
+        <h1 class="text-2xl font-bold mb-4">Office Furniture</h1>
+        <ul class="space-y-2 mb-8">
+            <li class="text-lg">Desks</li>
+            <li class="text-lg">Office Chairs</li>
+            <li class="text-lg">File Cabinets</li>
+            <li class="text-lg">Cubicles</li>
+        </ul>
+        <hr class="mb-6">
+        <h1 class="text-2xl  mb-3">Home Decor</h1>
+        <ul class="space-y-2 mb-8">
+            <li class="text-lg">Paintings</li>
+            <li class="text-lg">Wall Clocks</li>
+            <li class="text-lg">Doormats</li>
+            <li class="text-lg">Fairy Lights</li>
+           
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content">
+        <!-- Featured Image -->
+        <div class="mb-4">
+            <img alt="Living room with furniture" class="w-full" height="150" src="https://storage.googleapis.com/a1aa/image/77HyIcbdSCJdiS7SSqg6f-t7vFPRI_XW9ZRL4GNUYL0.jpg" width="800" />
+        </div>
+        <!-- Products -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {% for product in products %}
+            <div class="bg-white p-4 image">
+                <img alt="{{ product.name }}" class="w-full h-auto mb-2" height="200" src="{{ product.image_url }}" width="200" />
+                <h3 class="text-xl font-bold">{{ product.name }}</h3>
+                <p class="text-gray-500">Category: {{ product.discription }}</p>
+                <p class="text-lg font-bold">Price: ${{ product.price }}</p>
+                <form action="{{ url_for('buy_now', product_id=product.id) }}" method="POST">
+                    <button class="bg-gray-200 px-4 py-2 mt-2" style="background-color: #b29986 ;border-radius: 5px;border: none;" type="submit">
+                        Buy now
+                    </button>
+                </form>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

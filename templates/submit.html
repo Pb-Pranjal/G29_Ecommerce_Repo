@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit New Product</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5e6d3;
+            color: #5a3e2b;
+            margin: 0;
+            padding: 50px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .image-section {
+            flex: 1;
+            min-width: 300px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .form-section {
+            flex: 1;
+            min-width: 300px;
+            padding: 20px;
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .form-group .submit-btn {
+            background-color: #5a3e2b;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+            display: block;
+            margin: auto;
+        }
+        .form-group .submit-btn:hover {
+            background-color: #4a3323;
+        }
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #5a3e2b;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        a:hover {
+            color: #4a3323;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Image Section -->
+        <div class="image-section">
+            <img src="static/images/image.webp" alt="Living room setup with sofa and lamps" width="500px">
+        </div>
+
+        <!-- Form Section -->
+        <div class="form-section">
+            <h2>Submit New Product</h2>
+            
+            <!-- Display Flash Messages -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            <ul>
+                {% for category, message in messages %}
+                <li class="{{ category }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            {% endwith %}
+            
+            <!-- Product Submission Form -->
+            <form action="{{ url_for('submit_product') }}" method="POST" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="seller_id">Seller ID:</label>
+                    <input type="number" id="seller_id" name="seller_id" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="name">Product Name:</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Description:</label>
+                    <textarea id="description" name="description" rows="4" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="price">Price (in USD):</label>
+                    <input type="number" id="price" name="price" step="0.01" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="stock">Stock Quantity:</label>
+                    <input type="number" id="stock" name="stock" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="image_url">Product Image URL:</label>
+                    <input type="text" id="image_url" name="image_url">
+                </div>
+
+                <div class="form-group">
+                    <button class="submit-btn" type="submit">Submit Product</button>
+                </div>
+            </form>
+            <a href="{{ url_for('list_products') }}">View Products</a>
+
+        </div>
+    </div>
+</body>
+</html>

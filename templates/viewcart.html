@@ -1,0 +1,52 @@
+{% extends "index.html" %}
+
+{% block content %}
+<div style="padding: 2rem; background-color: #E7BC91; color: #9C6644; border-radius: 10px; max-width: 800px; margin: 2rem auto; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+    <h1 style="text-align: center; font-size: 2.5rem; margin-bottom: 1.5rem; color: #9C6644;">Your Cart</h1>
+    
+    {% if cart_details %}
+    <table style="width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; background-color: #FFF; border-radius: 8px; overflow: hidden;">
+        <thead>
+            <tr style="background-color: #9C6644; color: #FFF; text-align: left;">
+                <th style="padding: 0.8rem;">Product</th>
+                <th style="padding: 0.8rem;">Price</th>
+                <th style="padding: 0.8rem;">Quantity</th>
+                <th style="padding: 0.8rem;">Total</th>
+                <th style="padding: 0.8rem;">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in cart_details %}
+            <tr style="border-bottom: 1px solid #DDB892;">
+                <td style="padding: 0.8rem; color: #9C6644;">{{ item.name }}</td>
+                <td style="padding: 0.8rem; color: #9C6644;">${{ item.price }}</td>
+                <td style="padding: 0.8rem;">
+                    <form action="{{ url_for('update_cart', cart_id=item.id) }}" method="POST" style="display: flex; gap: 0.5rem; align-items: center;">
+                        <input type="number" name="quantity" value="{{ item.quantity }}" min="1" style="padding: 0.5rem; border: 1px solid #9C6644; border-radius: 5px; width: 60px; color: #9C6644;">
+                        <button type="submit" style="padding: 0.4rem 0.8rem; background-color: #9C6644; color: #FFF; border: none; border-radius: 5px; cursor: pointer;">Update</button>
+                    </form>
+                </td>
+                <td style="padding: 0.8rem; color: #9C6644;">${{ item.total }}</td>
+                <td style="padding: 0.8rem;">
+                    <a href="{{ url_for('remove_from_cart', cart_id=item.id) }}" style="color: #9C6644; text-decoration: none; font-weight: bold;">Remove</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    <div style="text-align: center; font-size: 1.4rem; font-weight: bold; color: #9C6644; margin-bottom: 1.5rem;">
+        Total Amount: <span style="color: #9C6644;">${{ total_amount }}</span>
+    </div>
+    
+    <!-- Checkout Button -->
+    <div style="text-align: center;">
+        <a href="{{ url_for('checkout' ) }}" method="POST" style="display: inline-block; padding: 0.8rem 2rem; background-color: #9C6644; color: #FFF; font-size: 1.2rem; font-weight: bold; border-radius: 8px; text-decoration: none; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); transition: all 0.3s;">
+            Proceed to Checkout
+        </a>
+    </div>
+    {% else %}
+    <p style="text-align: center; font-size: 1.4rem; color: #9C6644; margin-top: 2rem;">Your cart is empty!</p>
+    {% endif %}
+</div>
+{% endblock %}

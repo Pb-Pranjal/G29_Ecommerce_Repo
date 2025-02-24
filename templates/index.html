@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>
+   FurniStyle
+  </title>
+
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&amp;display=swap" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto:wght@400&display=swap" rel="stylesheet"/>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/productlist.css') }}">
+
+
+
+  {% block style %}
+  {% endblock %}
+<style>
+   body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background-color: #f5f5f5;
+        }
+        .navbar {
+            background-color: #8b5e3c;
+            color: white;
+            padding: 20px 20px;
+            display: flex;
+            
+            justify-content: space-between;
+            align-items: center;
+           position: sticky;
+        top: 0; /* Stick to the top */
+     
+        z-index: 1000; /* Ensure it stays above other elements */
+        }
+        .navbar .logo {
+            font-size: 40px;
+            font-weight: bold;
+        }
+        .navbar .menu {
+            display: flex;
+            gap: 40px;
+        }
+        .navbar .menu a {
+            color: white;
+            text-decoration: none;
+            font-size: 30px;
+        }
+        .navbar .menu a:hover {
+            text-decoration: underline;
+        }
+        .navbar .cart {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .navbar .cart button {
+            background-color: #f5f5f5;
+            color: #8b5e3c;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .navbar .cart button:hover {
+            background-color: #e0e0e0;
+        }
+        .navbar .cart i {
+            font-size: 20px;
+        }
+
+
+
+
+        @media (max-width: 800px) {
+            .navbar .menu {
+                flex-direction: column;
+                gap: 10px;
+            }}
+        </style>
+        </head>
+        <body>
+            <div class="navbar">
+             <div class="logo">
+              FurniStyle
+             </div>
+             <div class="menu">
+              <a href="{{ url_for('home' ) }}">
+               Home
+              </a>
+              <a href="{{ url_for('product' ) }}">
+               Products
+              </a>
+              <a href="{{ url_for('aboutus' ) }}">
+               AboutUs
+              </a>
+              <a href="{{ url_for('contactus' ) }}">
+               Contact
+              </a>
+              <a href="#">
+               Sale
+              </a>
+             </div>
+             {% if current_user.is_authenticated %}
+
+             <div class="cart">
+                <a href="{{ url_for('view_cart') }}">
+                    <i class="fas fa-shopping-cart" style="font-size: 20px; color: #f5f5f5;padding: 20px;"></i>
+                </a>
+                <div class="profile">
+                    <a href="{{ url_for('profile') }}">
+                        <i class="fas fa-user" style="font-size: 24px; color: #f5f5f5;"></i>
+                    </a>
+                </div>
+                
+                {% if role2!='buyer'%}
+                <a href="{{ url_for('submit_product' ) }}"><button>
+                    Sell Here
+                   </button></a>
+                {% endif %}
+             
+                <a href="{{ url_for('logout' ) }}"><button>
+                 Logout
+                </button></a>
+                {% else %}
+                <a  href="{{ url_for('login' ) }}"><button style="  background-color: #f5f5f5;
+                    color: #8b5e3c;
+                    border: none;
+                    padding: 10px 20px;
+                    cursor: pointer;
+                    font-size: 16px;">
+                    Login
+                   </button></a>
+                   
+                {%endif %}
+                
+               
+                
+               </div>
+            </div>
+           
+            {% block content %}
+        
+    {% endblock %}
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+ </body>
+</html>
+        

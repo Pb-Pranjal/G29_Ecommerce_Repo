@@ -1,0 +1,47 @@
+{% extends 'index.html' %}
+{% block content %}
+    
+
+<div class="container mt-5">
+    <h1>Product List</h1>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Seller ID</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Stock</th>
+                <th>Image</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for product in products %}
+            <tr>
+                <td>{{ product.id }}</td>
+                <td>{{ product.seller_id }}</td>
+                <td>{{ product.name }}</td>
+                <td>{{ product.description }}</td>
+                <td>{{ product.price }}</td>
+                <td>{{ product.stock }}</td>
+                <td>
+                    {% if product.image_url %}
+                        <img src="{{ product.image_url }}" alt="Product Image" style="max-width: 100px;">
+                    {% else %}
+                        No Image
+                    {% endif %}
+                </td>
+                <td style="display: flex;gap: 6px;">
+                    <a href="{{ url_for('update_product', id=product.id) }}" class="btn-action">Edit</a>
+                    
+                    <a href="{{ url_for('delete_product', id=product.id) }}" class="btn-action">Delete</a>
+                    
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
